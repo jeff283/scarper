@@ -17,7 +17,8 @@ def download():
 
     try:
         url = "https://fmmods.com/fouad-whatsapp/"
-        site = requests.get(url).text
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',}
+        site = requests.get(url, headers=headers).text
 
         soup = BeautifulSoup(site, features="lxml")
 
@@ -29,7 +30,7 @@ def download():
         return redirect(data)
     except Exception as e:
         print(e)
-        return render_template('error.html')
+        return render_template('error.html'), 500
 
        
 if __name__ == '__main__':
