@@ -15,19 +15,23 @@ def index():
 @app.route('/download')
 def download():
 
+    try:
+        url = "https://fmmods.com/fouad-whatsapp/"
+        site = requests.get(url).text
 
-    url = "https://fmmods.com/fouad-whatsapp/"
-    site = requests.get(url).text
+        soup = BeautifulSoup(site, features="lxml")
 
-    soup = BeautifulSoup(site, features="lxml")
+        data = soup.select("div>a[onclick^='downloadpage']")
 
-    data = soup.select("div>a[onclick^='downloadpage']")
+        data = data[0]["onclick"]
+        data = data.split('\n')[1].strip().rstrip("',").lstrip("'")
 
-    data = data[0]["onclick"]
-    data = data.split('\n')[1].strip().rstrip("',").lstrip("'")
+        return redirect(data)
+    except Exception as e:
+        print(e)
+        return render_template('error.html')
 
-    return redirect(data)
        
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
     
